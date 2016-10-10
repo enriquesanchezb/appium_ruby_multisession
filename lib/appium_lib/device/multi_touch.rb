@@ -86,7 +86,7 @@ module Appium
 
     # Ask Appium to perform the actions
     def perform
-      $driver.multi_touch @actions
+      @driver.multi_touch @actions
     end
   end # class MultiTouch
 end # module Appium

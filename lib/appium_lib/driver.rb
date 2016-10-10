@@ -155,7 +155,7 @@ module Appium
   # that module are promoted on.
   # otherwise, the array of modules will be used as the promotion target.
   def self.promote_singleton_appium_methods(modules)
-    fail 'Driver is nil' if $driver.nil?
+    fail 'Driver is nil' if @driver.nil?
 
     target_modules = []
 
@@ -170,15 +170,15 @@ module Appium
 
     target_modules.each do |const|
       # noinspection RubyResolve
-      $driver.public_methods(false).each do |m|
+      @driver.public_methods(false).each do |m|
         const.send(:define_singleton_method, m) do |*args, &block|
           begin
             super(*args, &block) # promote.rb
           rescue NoMethodError, ArgumentError
-            $driver.send m, *args, &block if $driver.respond_to?(m)
+            @driver.send m, *args, &block if @driver.respond_to?(m)
           end
           # override unless there's an existing method with matching arity
-        end unless const.respond_to?(m) && const.method(m).arity == $driver.method(m).arity
+        end unless const.respond_to?(m) && const.method(m).arity == @driver.method(m).arity
       end
     end
   end
@@ -206,12 +206,12 @@ module Appium
   # Appium.promote_appium_methods Minitest::Spec
   # ```
   def self.promote_appium_methods(class_array)
-    fail 'Driver is nil' if $driver.nil?
+    fail 'Driver is nil' if @driver.nil?
     # Wrap single class into an array
     class_array = [class_array] unless class_array.class == Array
     # Promote Appium driver methods to class instance methods.
     class_array.each do |klass|
-      $driver.public_methods(false).each do |m|
+      @driver.public_methods(false).each do |m|
         klass.class_eval do
           define_method m do |*args, &block|
             begin
@@ -221,9 +221,9 @@ module Appium
 
               # minitest also defines a name method,
               # so rescue argument error
-              # and call the name method on $driver
+              # and call the name method on @driver
             rescue NoMethodError, ArgumentError
-              $driver.send m, *args, &block if $driver.respond_to?(m)
+              @driver.send m, *args, &block if @driver.respond_to?(m)
             end
           end
         end
@@ -289,7 +289,7 @@ module Appium
     # @return [Driver]
     def initialize(opts = {})
       # quit last driver
-      $driver.driver_quit if $driver
+      @global_diver.driver_quit if @global_diver
       fail 'opts must be a hash' unless opts.is_a? Hash
 
       opts              = Appium.symbolize_keys opts
@@ -345,7 +345,7 @@ module Appium
       end
 
       # Save global reference to last created Appium driver for top level methods.
-      $driver = self
+      @global_driver = self
 
       self # return newly created driver
     end

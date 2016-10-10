@@ -139,14 +139,14 @@ module Appium
 
     # Ask the driver to perform all actions in this action chain.
     def perform
-      $driver.touch_actions @actions
+      @driver.touch_actions @actions
       self
     end
 
     # Does nothing, currently.
     def cancel
       @actions << { action: cancel }
-      $driver.touch_actions @actions
+      @driver.touch_actions @actions
       self
     end
 
