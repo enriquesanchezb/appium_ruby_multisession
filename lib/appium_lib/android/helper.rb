@@ -39,7 +39,7 @@ module Appium
 
         # scoped to: text resource-id content-desc
         attributes_values = attributes.values
-        strings           = $driver.lazy_load_strings
+        strings           = @driver.lazy_load_strings
         id_matches        = []
 
         unless strings.empty?

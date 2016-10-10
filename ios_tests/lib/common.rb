@@ -26,7 +26,7 @@ def go_to_textfields
 end
 
 def screen
-  $driver.find_element(:class, 'UIANavigationBar').name
+  @driver.find_element(:class, 'UIANavigationBar').name
 end
 
 def catalog

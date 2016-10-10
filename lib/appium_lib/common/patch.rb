@@ -40,7 +40,7 @@ module Appium
         center_x = location_x + (size_width / 2.0)
         center_y = location_y + (size_height / 2.0)
 
-        w = $driver.window_size
+        w = @driver.window_size
         OpenStruct.new(x: "#{center_x} / #{w.width.to_f}",
                        y: "#{center_y} / #{w.height.to_f}")
       end
@@ -112,7 +112,7 @@ def patch_webdriver_bridge
         # for example invalid JSON will not be a Hash
         Appium::Logger.ap_info command_hash if command_hash
       end
-      delay = $driver.global_webdriver_http_sleep
+      delay = @driver.global_webdriver_http_sleep
       sleep delay if !delay.nil? && delay > 0
       # Appium::Logger.info "verb: #{verb}, path #{path}, command_hash #{command_hash.to_json}"
       http.call verb, path, command_hash
