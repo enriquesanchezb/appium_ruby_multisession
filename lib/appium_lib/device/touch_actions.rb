@@ -15,7 +15,7 @@ module Appium
       COMPLEX_ACTIONS.each do |action|
         define_method(action) do |opts|
           auto_perform = opts.delete(:auto_perform) { |_k| true }
-          ta           = TouchAction.new
+          ta           = TouchAction.new(@driver)
           ta.send(action, opts)
           return ta unless auto_perform
           ta.perform
@@ -25,8 +25,9 @@ module Appium
 
     attr_reader :actions
 
-    def initialize
+    def initialize(driver)
       @actions = []
+      @driver = driver
     end
 
     # Move to the given co-ordinates.
@@ -146,7 +147,7 @@ module Appium
     # Does nothing, currently.
     def cancel
       @actions << { action: cancel }
-      @driver.touch_actions @actions
+      @driver.driver.touch_actions @actions
       self
     end
 
