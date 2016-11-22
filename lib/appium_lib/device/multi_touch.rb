@@ -31,11 +31,11 @@ module Appium
         p = Float(percentage) / 100
         i = 1 - p
 
-        top = TouchAction.new(@driver)
-        top.swipe start_x: 1.0, start_y: 0.0, end_x: i, end_y: i, duration: 1
+        top = TouchAction.new
+        top.swipe start_x: 1.0, start_y: 0.0, delta_x: i, delta_y: i, duration: 1
 
-        bottom = TouchAction.new(@driver)
-        bottom.swipe(start_x: 0.0, start_y: 1.0, end_x: p, end_y: p, duration: 1)
+        bottom = TouchAction.new
+        bottom.swipe(start_x: 0.0, start_y: 1.0, delta_x: p, delta_y: p, duration: 1)
 
         pinch = MultiTouch.new
         pinch.add top
@@ -59,11 +59,11 @@ module Appium
         p = 100 / Float(percentage)
         i = 1 - p
 
-        top = TouchAction.new(@driver)
-        top.swipe start_x: i, start_y: i, end_x: 1, end_y: 1, duration: 1
+        top = TouchAction.new
+        top.swipe start_x: i, start_y: i, delta_x: 1, delta_y: 1, duration: 1
 
-        bottom = TouchAction.new(@driver)
-        bottom.swipe start_x: p, start_y: p, end_x: 1, end_y: 1, duration: 1
+        bottom = TouchAction.new
+        bottom.swipe start_x: p, start_y: p, delta_x: 1, delta_y: 1, duration: 1
 
         zoom = MultiTouch.new
         zoom.add top
