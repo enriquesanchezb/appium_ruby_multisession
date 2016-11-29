@@ -50,7 +50,7 @@ module Minitest
 end
 
 module Appium
-  # Load appium.txt (toml format)
+  # Load arbitrary text (toml format)
   #
   # ```
   # [caps]
@@ -102,9 +102,9 @@ module Appium
     alias_method :load_appium_txt, :load_settings
   end
 
-  # @param base_dir [String] parent directory of loaded appium.txt (toml)
-  # @param file_paths
-  # @return list of require files as an array, nil if require doesn't exist
+  # @param [String] base_dir parent directory of loaded appium.txt (toml)
+  # @param [String] file_paths
+  # @return [Array] list of require files as an array, nil if require doesn't exist
   def self.expand_required_files(base_dir, file_paths)
     # ensure files are absolute
     Array(file_paths).map! do |f|
@@ -265,6 +265,8 @@ module Appium
     attr_accessor :appium_port
     # Device type to request from the appium server
     attr_accessor :appium_device
+    # Automation name sent to appium server
+    attr_reader :automation_name
     # Boolean debug mode for the Appium Ruby bindings
     attr_accessor :appium_debug
     # instance of AbstractEventListener for logging support
@@ -328,6 +330,8 @@ module Appium
       # https://code.google.com/p/selenium/source/browse/spec-draft.md?repo=mobile
       @appium_device = @caps[:platformName]
       @appium_device = @appium_device.is_a?(Symbol) ? @appium_device : @appium_device.downcase.strip.intern if @appium_device
+
+      @automation_name = @caps[:automationName].downcase if @caps[:automationName]
 
       # load common methods
       extend Appium::Common
