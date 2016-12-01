@@ -124,7 +124,6 @@ module Appium
     # @option opts [int] :delta_x The distance from start to move, on the x axis.  Default 0.
     # @option opts [int] :delta_y The distance from start to move, on the y axis.  Default 0.
     # @option opts [int] :duration How long the actual swipe takes to complete in milliseconds. Default 200.
-    # @deprecated Please do not use end_x, end_y anymore
     def swipe(opts)
       start_x  = opts.fetch :start_x, 0
       start_y  = opts.fetch :start_y, 0
@@ -147,7 +146,7 @@ module Appium
 
       press x: start_x, y: start_y
       wait(duration) if duration
-      move_to x: start_x + delta_x, y: start_y + delta_y
+      move_to x: delta_x, y: delta_y
       release
       self
     end
@@ -161,7 +160,7 @@ module Appium
     # Does nothing, currently.
     def cancel
       @actions << { action: cancel }
-      @driver.driver.touch_actions @actions
+      @driver.touch_actions @actions
       self
     end
 
